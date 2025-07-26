@@ -6,6 +6,8 @@ class Admin(models.Model):
 
 class Subject(models.Model):
     subname = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
 
 class Student(models.Model):
     enroll = models.CharField(max_length=20)
@@ -16,13 +18,15 @@ class Student(models.Model):
     class Meta:
         db_table = "student"
 class Question(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    question_text = models.TextField()
-    opt1 = models.CharField(max_length=255)
-    opt2 = models.CharField(max_length=255)
-    opt3 = models.CharField(max_length=255)
-    opt4 = models.CharField(max_length=255)
-    cans = models.CharField(max_length=255)
+    question = models.CharField(max_length=255)
+    option1 = models.CharField(max_length=100)
+    option2 = models.CharField(max_length=100)
+    option3 = models.CharField(max_length=100)
+    option4 = models.CharField(max_length=100)
+    correctanswer = models.CharField(max_length=100)
+    subject = models.ForeignKey('Subject', on_delete=models.CASCADE)
+    def __str__(self):
+        return self.question
 
 class ExamResult(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
