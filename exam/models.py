@@ -13,7 +13,8 @@ class Student(models.Model):
     password = models.CharField(max_length=50)
     email = models.EmailField()
     contact = models.CharField(max_length=15)
-
+    class Meta:
+        db_table = "student"
 class Question(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     question_text = models.TextField()

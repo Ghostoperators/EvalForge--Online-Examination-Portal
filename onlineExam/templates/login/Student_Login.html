@@ -4,9 +4,11 @@
     <title>Student Login</title>
 </head>
 <body>
-    <h2>Student Login</h2>
+   
     {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
-    <form method="post">
+    <center>
+         <h2>Student Login</h2>
+        <form method="post">
         {% csrf_token %}
         <label for="loginid">Login ID:</label>
         <input type="text" name="loginid" required><br>
@@ -14,5 +16,8 @@
         <input type="password" name="password" required><br>
         <input type="submit" value="Login">
     </form>
+        <h6>Don't have an account? <a href="{% url 'Student_signup' %}">Sign Up</a></h6>
+    </center>
+    
 </body>
 </html>
