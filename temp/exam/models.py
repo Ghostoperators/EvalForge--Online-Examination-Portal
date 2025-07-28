@@ -33,6 +33,9 @@ class ExamResult(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     totalmarks = models.IntegerField()
     totalquestion = models.IntegerField()
+
+from django.db import models
+
 class Admin(models.Model):
     username = models.CharField(max_length=64, unique=True)
     password = models.CharField(max_length=128)

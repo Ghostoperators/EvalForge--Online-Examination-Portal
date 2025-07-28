@@ -6,15 +6,11 @@ from exam import views
 urlpatterns = [
     path('', lambda request: redirect('landing_page')),  # Redirect root URL to landing page
     path('landing_page/', views.landing_page, name='landing_page'),
-
-    # Student URLs
     path('signup/', views.student_signup, name='student_signup'),
     path('login/', views.student_login, name='student_login'),
     path('student/', views.student_dashboard, name='student_dashboard'),
-
-    # Admin URLs
-    path('admin_login', views.admin_login, name='admin_login'),                     # Admin login page
-    path('admin_signup', views.admin_signup, name='admin_signup'),            # Admin signup page
-   # path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),   # (If you have a dashboard view)
+    path('admin/', views.admin_login, name='admin_login'),
     path('logout/', views.logout_view, name='logout'),
+    path('admin/', views.admin_signup, name='admin_signup'),
+
 ]
