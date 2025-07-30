@@ -1,34 +1,263 @@
-<h2>Welcome, {{ student.loginid }}</h2>
-<p>Email: {{ student.email }}</p>
-<p>Contact: {{ student.contact }}</p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student Dashboard</title>
+    <style>
+        /* Reset & base */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4ac0b5 0%, #82d8d8 100%);
+            margin: 0;
+            min-height: 100vh;
+            padding: 30px 40px;
+            color: #264653;
+            line-height: 1.6;
+        }
 
-<hr>
-<h3>Available Subjects:</h3>
-<ul>
-    {% for subject in subjects %}
-        <li>{{ Subject.name }} - <a href="#">Start Exam</a></li>
-    {% empty %}
-        <li>No Subjects available</li>
-    {% endfor %}
-</ul>
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-<hr>
-<h3>Your Previous Results:</h3>
-<table border="1">
-    <tr>
-        <th>Subject</th>
-        <th>Marks</th>
-        <th>Total Questions</th>
-    </tr>
-    {% for result in results %}
-    <tr>
-        <td>{{ result.Subject.name }}</td>
-        <td>{{ result.totalmarks }}</td>
-        <td>{{ result.totalquestion }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="3">No exam results found.</td>
-    </tr>
-    {% endfor %}
-</table>
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        header h2 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
+            color: #1b3a4b;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
+        }
+
+        header p {
+            margin: 4px 0;
+            color: #2f586b;
+            font-size: 1.1rem;
+        }
+
+        button.logout {
+            padding: 10px 24px;
+            font-size: 1rem;
+            background-color: #e76f51;  /* Coral Red */
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(231, 111, 81, 0.6);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            user-select: none;
+        }
+        button.logout:hover {
+            background-color: #d85e3c;
+            box-shadow: 0 6px 16px rgba(216, 94, 60, 0.8);
+        }
+        button.logout:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        section {
+            background: #ffffffdd;
+            padding: 25px 35px;
+            margin-bottom: 50px;
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(38, 70, 83, 0.2);
+            max-width: 900px;
+        }
+
+        section h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #19647e;
+            margin-top: 0;
+            margin-bottom: 30px;
+            border-left: 6px solid #19647e;
+            padding-left: 12px;
+            user-select: none;
+            text-shadow: 0 0 3px rgba(25, 100, 126, 0.5);
+        }
+
+        ul.subject-list {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        ul.subject-list li {
+            background: #72c3dc;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(114,195,220,0.5);
+        }
+
+        ul.subject-list li a.take-test-btn {
+            margin-left: 15px;
+            padding: 8px 18px;
+            background-color: #19647e;
+            color: white;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 3px 8px rgba(25, 100, 126, 0.7);
+        }
+        ul.subject-list li a.take-test-btn:hover {
+            background-color: #0f3d54;
+            box-shadow: 0 5px 12px rgba(15, 61, 84, 0.9);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(38, 70, 83, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+
+        thead {
+            background-color: #19647e;
+            color: white;
+            user-select: none;
+        }
+        th, td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #cad6df;
+            text-align: center;
+            vertical-align: middle;
+        }
+        tr:nth-child(even) {
+            background-color: #f4f9fc;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            .wrapper {
+                padding: 0 15px;
+            }
+            ul.subject-list {
+                flex-direction: column;
+            }
+            ul.subject-list li {
+                width: 100%;
+                justify-content: space-between;
+            }
+            ul.subject-list li a.take-test-btn {
+                margin-left: 0;
+                margin-top: 10px;
+                align-self: flex-start;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+                width: 100%;
+            }
+            thead tr {
+                display: none;
+            }
+            tbody tr {
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 12px;
+                padding: 15px;
+                background-color: white;
+            }
+            tbody td {
+                text-align: right;
+                border: none;
+                padding: 10px 40px 10px 15px;
+                position: relative;
+            }
+            tbody td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                top: 12px;
+                font-weight: 700;
+                color: #19647e;
+                text-transform: uppercase;
+                white-space: nowrap;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div>
+                <h2>Welcome, {{ student.loginid }}</h2>
+                <p>Email: {{ student.email }}</p>
+                <p>Contact: {{ student.contact }}</p>
+            </div>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout">Logout</button>
+            </form>
+        </header>
+
+        <section>
+            <h3>Take Test</h3>
+            {% if subjects %}
+                <ul class="subject-list">
+                    {% for subject in subjects %}
+                        <li>
+                            {{ subject.subname }}
+                            <a href="{% url 'start_exam' subject.id %}" class="take-test-btn">Take Test</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No subjects available to take test.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h3>Your Previous Results</h3>
+            {% if results %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Total Questions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td data-label="Subject">{{ result.subject.subname }}</td>
+                            <td data-label="Marks">{{ result.totalmarks }}</td>
+                            <td data-label="Total Questions">{{ result.totalquestion }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No exam results found.</p>
+            {% endif %}
+        </section>
+    </div>
+</body>
+</html>

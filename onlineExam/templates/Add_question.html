@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Add Question - {{ subject.subname }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 0;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        h2 {
+            color: #0d6efd;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus {
+            border-color: #0d6efd;
+            outline: none;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #842029;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        button {
+            background-color: #0d6efd;
+            color: white;
+            padding: 12px 0;
+            width: 100%;
+            border-radius: 6px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #084bcc;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #0d6efd;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Add Question for "{{ subject.subname }}"</h2>
+
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" action="">
+            {% csrf_token %}
+
+            <label for="question">Question Text</label>
+            <input type="text" id="question" name="question" placeholder="Enter the question" required autofocus />
+
+            <label for="option1">Option 1</label>
+            <input type="text" id="option1" name="option1" placeholder="First option" required />
+
+            <label for="option2">Option 2</label>
+            <input type="text" id="option2" name="option2" placeholder="Second option" required />
+
+            <label for="option3">Option 3</label>
+            <input type="text" id="option3" name="option3" placeholder="Third option" required />
+
+            <label for="option4">Option 4</label>
+            <input type="text" id="option4" name="option4" placeholder="Fourth option" required />
+
+            <label for="correctanswer">Correct Answer</label>
+            <input type="text" id="correctanswer" name="correctanswer" placeholder="Type the correct option exactly" required />
+
+            <button type="submit">Add Question</button>
+        </form>
+
+        <a href="{% url 'admin_dashboard' %}" class="back-link">&larr; Back to Dashboard</a>
+    </div>
+</body>
+</html>
