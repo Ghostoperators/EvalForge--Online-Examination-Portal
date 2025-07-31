@@ -195,7 +195,7 @@ def start_exam(request, subject_id):
     # Ensure student is logged in
     student_id = request.session.get('student_id')
     if not student_id:
-        return redirect('student_login'
+        return redirect('student_login')
     subject = get_object_or_404(Subject, id=subject_id)
     questions = Question.objects.filter(subject=subject)
     if request.method == 'POST':
@@ -232,8 +232,6 @@ def start_exam(request, subject_id):
         'subject': subject,
         'questions': questions,
     })
-
 def logout_view(request):
     request.session.flush()
     return redirect('landing_page')
-
